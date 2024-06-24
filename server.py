@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -8,7 +9,6 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
-from pydantic import BaseModel
 
 class Log(BaseModel):
     name: str
@@ -18,6 +18,7 @@ async def root(req: Request):
     return templates.TemplateResponse(
         request=req, name="index.html", context={"id": id}
     )
+
 
 @app.get("/{name}")
 async def test(name: str):
