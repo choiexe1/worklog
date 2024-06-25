@@ -1,25 +1,38 @@
-from pydantic import BaseModel
-from fastapi import FastAPI, Request
+from pydantic import BaseModel, Field
+from fastapi import Depends, FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from sqlalchemy import Column, Integer, String
+from db import Base, SessionLocal, engine
+from sqlalchemy.orm import Session
+
+import models
+import crud
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
 templates = Jinja2Templates(directory="templates")
 
-class Log(BaseModel):
-    name: str
+Base.metadata.create_all(bind=engine)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+class Company(BaseModel):
+    name: str = Field(min_length=1)
 
 @app.get("/")
-async def root(req: Request):
-    return templates.TemplateResponse(
-        request=req, name="index.html", context={"id": id}
-    )
+def root(request: Request, db: Session = Depends(get_db)):
+    companies = crud.get_companies(db)
+    return templates.TemplateResponse("index.html", {"request": request, "companies": companies}) 
 
-
-@app.get("/{name}")
-async def test(name: str):
-    return Log(name=name)
+@app.get("/{path}")
+async def create(path: str, db: Session = Depends(get_db)):
+    crud.create_company(db, path)
+    return db.query(models.Company).all()

@@ -2,7 +2,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Item Details</title>
+    <title>개인별 작업보고서</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
@@ -16,108 +16,154 @@
         <input type="text" name="name" id="" class="border p-1" />
       </section>
 
-      <div class="grid grid-cols-1 items-center">
-        <div class="grid grid-cols-4 md:grid-flow-col">
-          <div class="text-sm">
-            <label for="company" class="">업체</label>
-            <select name="company" id="" class="border-b">
-              <option value="">코웨이</option>
-              <option value="">오토앤</option>
-            </select>
-          </div>
-          <div class="text-sm">
-            <label for="">제품</label>
-            <select name="" id="" class="border-b">
-              <option value="">노블 2.0 복합필터</option>
-              <option value="">노블 2.0 이중필터</option>
-              <option value="">마이티 산불 복합필터 ㅇㅇㅇㅇ</option>
-            </select>
-          </div>
-        </div>
+      <div class="text-sm">
+        <label for="" class="block">작업일</label>
+        <input type="date" name="" id="" class="p-1 border-b" step="" />
       </div>
-    </div>
-    <!-- <div class="container mx-auto px-4">
-      <div class="flex flex-col">
-        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-            <div class="overflow-hidden">
-              <table
-                class="min-w-full text-left text-sm font-light text-surface">
-                <thead class="border-b border-neutral-200 font-medium">
-                  <tr>
-                    <th scope="col" class="px-6 py-4">#</th>
-                    <th scope="col" class="px-6 py-4">업체</th>
-                    <th scope="col" class="px-6 py-4">품명</th>
-                    <th scope="col" class="px-6 py-4">공정</th>
-                    <th scope="col" class="px-6 py-4">시작시간</th>
-                    <th scope="col" class="px-6 py-4">종료시간</th>
-                    <th scope="col" class="px-6 py-4">양품수</th>
-                    <th scope="col" class="px-6 py-4">불량수</th>
-                    <th scope="col" class="px-6 py-4">비고</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="border-b border-neutral-200">
-                    <td class="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                    <td class="whitespace-nowrap px-6 py-4">
-                      <select class="bg-neutral-100 p-2">
-                        <option selected>선택</option>
-                        <option>코웨이</option>
-                        <option>DK산업</option>
-                        <option>오토앤</option>
-                      </select>
-                    </td>
-                    <td class="whitespace-nowrap px-6 py-4">
-                      <select class="bg-neutral-100 p-2">
-                        <option selected>선택</option>
-                        <option>노블 2.0 복합필터</option>
-                        <option>노블 15평</option>
-                        <option>노블 20평</option>
-                      </select>
-                    </td>
-                    <td class="whitespace-nowrap px-6 py-4">
-                      <select class="bg-neutral-100 p-2">
-                        <option selected>선택</option>
-                        <option>EPDM 부착</option>
-                        <option>수리</option>
-                        <option>사출 삽입</option>
-                      </select>
-                    </td>
-                    <td class="whitespace-nowrap px-6 py-4">
-                      <input
-                        type="time"
-                        id=""
-                        name=""
-                        min="08:00"
-                        max="21:00"
-                        step="600"
-                        required />
-                    </td>
-                    <td class="whitespace-nowrap px-6 py-4">
-                      <input
-                        type="time"
-                        id=""
-                        name=""
-                        min="08:00"
-                        max="21:00"
-                        step="600"
-                        required />
-                    </td>
-                    <td class="whitespace-nowrap px-6 py-4">2</td>
-                    <td class="whitespace-nowrap px-6 py-4">0</td>
-                    <td class="whitespace-nowrap px-6 py-4">입력</td>
-                  </tr>
-                </tbody>
-              </table>
+
+      <div class="grid grid-cols-1 items-center">
+        <div id="tasks">
+          <div class="task" class="bg">
+            <hr class="my-4" />
+            <div class="grid grid-cols-1 gap-4 md:grid-flow-col">
+              <h1 class="idx">#1</h1>
+              <div class="text-sm">
+                <label for="company" class="">업체</label>
+                <select name="company" id="" class="border-b pl-1">
+                  {% for company in companies %}
+                  <option value="{{company.name}}">{{company.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="text-sm">
+                <label for="">제품</label>
+                <select name="" id="" class="border-b pl-1">
+                  <option value="">노블 2.0 복합필터</option>
+                  <option value="">노블 2.0 이중필터</option>
+                  <option value="">마이티 산불 복합필터 ㅇㅇㅇㅇ</option>
+                </select>
+              </div>
+              <div class="text-sm">
+                <label for="">공정</label>
+                <select name="" id="" class="border-b pl-1">
+                  <option value="">인박스 접기</option>
+                  <option value="">폴리백</option>
+                  <option value="">검사 및 비닐포장</option>
+                </select>
+              </div>
+              <div class="text-sm flex">
+                <div>
+                  <label for="">양품</label>
+                  <input
+                    type="number"
+                    name=""
+                    id=""
+                    class="pl-1 w-1/2"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                </div>
+                <div>
+                  <label for="">불량</label>
+                  <input
+                    type="number"
+                    name=""
+                    id=""
+                    class="pl-1 w-1/2"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                </div>
+              </div>
+              <div class="text-sm">
+                <label for="">시작 시간</label>
+                <input
+                  type="time"
+                  name=""
+                  id=""
+                  class="pl-1 border-b"
+                  step="300" />
+              </div>
+              <div class="text-sm">
+                <label for="">종료 시간</label>
+                <input
+                  type="time"
+                  name=""
+                  id=""
+                  class="pl-1 border-b"
+                  step="300" />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="container mx-auto px-4 flex flex-row-reverse py-4">
-      <button class="bg-gray-500 text-white border p-2 rounded-md text-sm">
-        행 추가(+)
+      <button
+        onclick="addTask()"
+        class="w-full my-8 button bg-black text-white p-1 rounded">
+        작업 추가 (+)
       </button>
-    </div> -->
+    </div>
   </body>
+  <script>
+    let addCount = 1;
+    const addTask = () => {
+      const tasks = document.getElementById("tasks");
+      let odd = '<div class="task">';
+      let even = '<div class="task" class="bg-red-100">';
+
+      if (addCount % 2 === 0) {
+        tasks.insertAdjacentHTML("afterbegin", even);
+      } else {
+        tasks.insertAdjacentHTML("afterbegin", odd);
+      }
+
+      let tag = `
+            <hr class="my-4" />
+            <div class="grid grid-cols-1 gap-4 md:grid-flow-col">
+              <h1 class="idx">#${++addCount}</h1>
+              <div class="text-sm">
+                <label for="company" class="">업체</label>
+                <select name="company" id="" class="border-b pl-1">
+                  {% for company in companies %}
+                  <option value="{{company.name}}">{{company.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="text-sm">
+                <label for="">제품</label>
+                <select name="" id="" class="border-b pl-1">
+                  <option value="">노블 2.0 복합필터</option>
+                  <option value="">노블 2.0 이중필터</option>
+                  <option value="">마이티 산불 복합필터 ㅇㅇㅇㅇ</option>
+                </select>
+              </div>
+              <div class="text-sm">
+                <label for="">공정</label>
+                <select name="" id="" class="border-b pl-1">
+                  <option value="">인박스 접기</option>
+                  <option value="">폴리백</option>
+                  <option value="">검사 및 비닐포장</option>
+                </select>
+              </div>
+              <div class="text-sm">
+                <label for="">시작 시간</label>
+                <input
+                  type="time"
+                  name=""
+                  id=""
+                  class="pl-1 border-b"
+                  step="300" />
+              </div>
+              <div class="text-sm">
+                <label for="">종료 시간</label>
+                <input
+                  type="time"
+                  name=""
+                  id=""
+                  class="pl-1 border-b"
+                  step="300" />
+              </div>
+            </div>
+          </div>
+        `;
+
+      tasks.insertAdjacentHTML("beforeend", tag);
+    };
+  </script>
 </html>
