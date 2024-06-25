@@ -33,12 +33,126 @@
       <div class="grid grid-cols-1 items-center">
         <div id="tasks">
           <div class="task" class="">
-            <hr class="my-4" />
+            <hr class="" />
             <div class="grid grid-cols-1 gap-4 md:grid-flow-col">
-              <h1 class="idx">#1</h1>
               <div class="text-sm">
                 <label for="company" class="">업체</label>
                 <select name="company" id="" class="border-b pl-1">
+                  <option selected value="select">선택</option>
+                  {% for company in companies %}
+                  <option value="{{company.name}}">{{company.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="text-sm">
+                <label for="product">제품</label>
+                <select name="product" id="product" class="border-b pl-1">
+                  <option selected value="select">선택</option>
+                  <option value="">노블 2.0 복합필터</option>
+                  <option value="">노블 2.0 이중필터</option>
+                  <option value="">마이티 산불 복합필터 ㅇㅇㅇㅇ</option>
+                </select>
+              </div>
+              <div class="text-sm">
+                <label for="process">공정</label>
+                <select name="process" id="process" class="border-b pl-1">
+                  <option selected value="select">선택</option>
+                  <option value="인박스 접기">인박스 접기</option>
+                  <option value="">폴리백</option>
+                  <option value="">검사 및 비닐포장</option>
+                </select>
+              </div>
+              <div class="text-sm flex">
+                <div>
+                  <label for="fair">양품</label>
+                  <input
+                    type="number"
+                    id="fair"
+                    name="fair"
+                    class="pl-1 w-1/2"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                </div>
+                <div>
+                  <label for="poor">불량</label>
+                  <input
+                    type="number"
+                    name="poor"
+                    id="poor"
+                    class="pl-1 w-1/2"
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                </div>
+              </div>
+              <div class="text-sm">
+                <label for="start">시작 시간</label>
+                <input
+                  type="time"
+                  name="start"
+                  id="start"
+                  class="pl-1 border-b"
+                  step="300" />
+              </div>
+              <div class="text-sm">
+                <label for="end">종료 시간</label>
+                <input
+                  type="time"
+                  name="end"
+                  id="end"
+                  class="pl-1 border-b"
+                  step="300" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button
+          onclick="addTask()"
+          class="w-full my-8 button bg-black text-white p-1 rounded">
+          작업 추가 (+)
+        </button>
+        <!-- <button
+          onclick="window.location.reload()"
+          class="w-full my-8 button bg-blue-500 text-white p-1 rounded">
+          새로고침
+        </button> -->
+      </div>
+    </div>
+  </body>
+  <script>
+    let addCount = 1;
+
+    // TODO: 작업 삭제 함수 구현
+    const deleteTask = (element) => {};
+
+    const getTaskLength = () => {
+      const tasks = document.getElementById("tasks");
+      return tasks.childElementCount;
+    };
+
+    const addTask = () => {
+      const tasks = document.querySelector("#tasks");
+      const length = getTaskLength();
+
+      let tag = "";
+
+      if (length % 2 != 0) {
+        tag += "<div class='task bg-neutral-200'>";
+      } else {
+        tag += "<div class='task'>";
+      }
+
+      tag += `
+            <hr class="my-2" />
+            <div class="grid grid-cols-1 gap-4 md:grid-flow-col">
+              <div class="text-sm">
+                <button class="button bg-red-600 p-1 rounded text-white" onclick="">
+                  삭제
+                </button>
+              </div>
+              <div class="text-sm">
+                <label for="company" class="">업체</label>
+                <select name="company" id="" class="border-b pl-1">
+                  <option selected value="select">선택</option>
                   {% for company in companies %}
                   <option value="{{company.name}}">{{company.name}}</option>
                   {% endfor %}
@@ -47,6 +161,7 @@
               <div class="text-sm">
                 <label for="">제품</label>
                 <select name="" id="" class="border-b pl-1">
+                  <option selected value="select">선택</option>
                   <option value="">노블 2.0 복합필터</option>
                   <option value="">노블 2.0 이중필터</option>
                   <option value="">마이티 산불 복합필터 ㅇㅇㅇㅇ</option>
@@ -55,6 +170,7 @@
               <div class="text-sm">
                 <label for="">공정</label>
                 <select name="" id="" class="border-b pl-1">
+                  <option selected value="select">선택</option>
                   <option value="">인박스 접기</option>
                   <option value="">폴리백</option>
                   <option value="">검사 및 비닐포장</option>
@@ -79,71 +195,6 @@
                     class="pl-1 w-1/2"
                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
                 </div>
-              </div>
-              <div class="text-sm">
-                <label for="">시작 시간</label>
-                <input
-                  type="time"
-                  name=""
-                  id=""
-                  class="pl-1 border-b"
-                  step="300" />
-              </div>
-              <div class="text-sm">
-                <label for="">종료 시간</label>
-                <input
-                  type="time"
-                  name=""
-                  id=""
-                  class="pl-1 border-b"
-                  step="300" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex">
-        <button
-          onclick="addTask()"
-          class="w-full my-8 button bg-black text-white p-1 rounded">
-          작업 추가 (+)
-        </button>
-      </div>
-    </div>
-  </body>
-  <script>
-    let addCount = 1;
-    const addTask = () => {
-      const tasks = document.getElementById("tasks");
-
-      let tag = `
-            <div class="task">
-            <hr class="my-4" />
-            <div class="grid grid-cols-1 gap-4 md:grid-flow-col">
-              <h1 class="idx">#${++addCount}</h1>
-              <div class="text-sm">
-                <label for="company" class="">업체</label>
-                <select name="company" id="" class="border-b pl-1">
-                  {% for company in companies %}
-                  <option value="{{company.name}}">{{company.name}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="text-sm">
-                <label for="">제품</label>
-                <select name="" id="" class="border-b pl-1">
-                  <option value="">노블 2.0 복합필터</option>
-                  <option value="">노블 2.0 이중필터</option>
-                  <option value="">마이티 산불 복합필터 ㅇㅇㅇㅇ</option>
-                </select>
-              </div>
-              <div class="text-sm">
-                <label for="">공정</label>
-                <select name="" id="" class="border-b pl-1">
-                  <option value="">인박스 접기</option>
-                  <option value="">폴리백</option>
-                  <option value="">검사 및 비닐포장</option>
-                </select>
               </div>
               <div class="text-sm">
                 <label for="">시작 시간</label>
