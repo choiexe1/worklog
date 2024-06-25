@@ -12,14 +12,23 @@
       </section>
 
       <section class="text-sm my-4">
-        <label for="name" class="block">작업자</label>
-        <input type="text" name="name" id="" class="border p-1" />
+        <div class="flex items-center gap-4">
+          <input
+            type="text"
+            name="name"
+            id=""
+            class="border p-1 block"
+            placeholder="작업자 성명" />
+          <button class="w-1/2 button rounded p-1 bg-green-700 text-white">
+            제출
+          </button>
+        </div>
       </section>
 
-      <div class="text-sm">
-        <label for="" class="block">작업일</label>
+      <section class="text-sm">
+        <label for="" class="">작업 날짜</label>
         <input type="date" name="" id="" class="p-1 border-b" step="" />
-      </div>
+      </section>
 
       <div class="grid grid-cols-1 items-center">
         <div id="tasks">
