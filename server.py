@@ -34,5 +34,4 @@ def root(request: Request, db: Session = Depends(get_db)):
 
 @app.get("/{path}")
 async def create(path: str, db: Session = Depends(get_db)):
-    crud.create_company(db, path)
     return db.query(models.Company).all()

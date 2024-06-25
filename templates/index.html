@@ -23,7 +23,7 @@
 
       <div class="grid grid-cols-1 items-center">
         <div id="tasks">
-          <div class="task" class="bg">
+          <div class="task" class="">
             <hr class="my-4" />
             <div class="grid grid-cols-1 gap-4 md:grid-flow-col">
               <h1 class="idx">#1</h1>
@@ -93,27 +93,22 @@
           </div>
         </div>
       </div>
-      <button
-        onclick="addTask()"
-        class="w-full my-8 button bg-black text-white p-1 rounded">
-        작업 추가 (+)
-      </button>
+      <div class="flex">
+        <button
+          onclick="addTask()"
+          class="w-full my-8 button bg-black text-white p-1 rounded">
+          작업 추가 (+)
+        </button>
+      </div>
     </div>
   </body>
   <script>
     let addCount = 1;
     const addTask = () => {
       const tasks = document.getElementById("tasks");
-      let odd = '<div class="task">';
-      let even = '<div class="task" class="bg-red-100">';
-
-      if (addCount % 2 === 0) {
-        tasks.insertAdjacentHTML("afterbegin", even);
-      } else {
-        tasks.insertAdjacentHTML("afterbegin", odd);
-      }
 
       let tag = `
+            <div class="task">
             <hr class="my-4" />
             <div class="grid grid-cols-1 gap-4 md:grid-flow-col">
               <h1 class="idx">#${++addCount}</h1>
