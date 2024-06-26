@@ -1,0 +1,150 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>개인별 작업보고서 | 관리자 페이지</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="w-full max-w-full mx-auto">
+      <div class="flex border-b border-gray-300">
+        <button
+          class="w-1/2 py-4 text-center font-medium text-gray-700 bg-gray-100 rounded-tl-lg focus:outline-none active:bg-gray-200"
+          onclick="openTab(event, 'tab1')">
+          <p class="text-sm tab-1">회사/제품 등록</p>
+        </button>
+        <button
+          class="w-1/2 py-4 text-center font-medium text-gray-700 bg-gray-100 rounded-tr-lg focus:outline-none"
+          onclick="openTab(event, 'tab2')">
+          <p class="text-sm tab-2">조회</p>
+        </button>
+        <button
+          class="w-1/2 py-4 text-center font-medium text-gray-700 bg-gray-100 rounded-tr-lg focus:outline-none"
+          onclick="openTab(event, 'tab3')">
+          <p class="text-sm">제품/회사 추가</p>
+        </button>
+      </div>
+
+      <div id="tab1" class="tabcontent p-4 overflow-y-auto">
+        <section class="border p-1">
+          <div class="flex flex-col">
+            <h1 class="text-lg font-bold m-1">업체 등록</h1>
+            <div class="flex items-center gap-2">
+              <label for="name" class="w-fit p-1">업체명</label>
+              <input
+                type="text"
+                id="name"
+                class="pl-1 flex-auto bg-neutral-100 border-b" />
+            </div>
+
+            <ul class="my-4 p-1">
+              <li class="text-neutral-500 text-sm">
+                동일한 이름의 업체가 이미 존재할 경우, 추가할 수 없습니다.
+              </li>
+              <li class="text-neutral-500 text-sm"></li>
+            </ul>
+
+            <div class="flex items-center gap-2 my-2 p-1">
+              <button
+                onclick="createCompany()"
+                class="button p-1 rounded w-full bg-green-600 text-white">
+                등록
+              </button>
+            </div>
+          </div>
+        </section>
+        <section class="border p-1 mt-8">
+          <div class="flex flex-col">
+            <h1 class="text-lg font-bold m-1">제품 등록</h1>
+            <div class="flex items-center gap-2">
+              <label for="name" class="w-fit p-1">업체명</label>
+              <select name="company" id="" class="border-b pl-1 bg-neutral-100">
+                <option selected value="select">선택</option>
+                {% for company in companies %}
+                <option value="{{company.name}}">{{company.name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <ul class="my-4 p-1 flex flex-col gap-2">
+              <li class="text-neutral-500 text-sm">
+                등록 전, 제품명과 코드를 반드시 확인해주세요.
+              </li>
+              <li class="text-neutral-500 text-sm">
+                동일한 이름의 제품이 이미 존재할 경우, 추가할 수 없습니다.
+              </li>
+            </ul>
+
+            <div class="flex items-center gap-2 my-2 p-1">
+              <button class="button p-1 rounded w-full bg-green-600 text-white">
+                등록
+              </button>
+            </div>
+
+            <!-- <div class="flex items-center gap-2">
+                <label for="type" class="w-fit p-1">유형</label>
+                <select name="" id="type" class="flex-auto bg-neutral-100">
+                  <option value="" selected>선택</option>
+                  <option value="">복합</option>
+                  <option value="">탈취</option>
+                  <option value="">기능성</option>
+                  <option value="">가습</option>
+                  <option value="">나노트랩</option>
+                  <option value="">기타</option>
+                </select>
+              </div> -->
+          </div>
+        </section>
+      </div>
+      <div id="tab2" class="tabcontent p-4 hidden">
+        <h2 class="text-lg font-bold text-gray-800">Tab 2 Content</h2>
+        <p class="mt-2 text-gray-700">
+          Duis lobortis velit tellus, eget luctus tellus facilisis eget.
+          Maecenas non massa varius, molestie lorem eget, molestie nisi.
+          Suspendisse potenti.
+        </p>
+      </div>
+      <div id="tab3" class="tabcontent p-4 hidden">
+        <h2 class="text-lg font-bold text-gray-800">Tab 2 Content</h2>
+        <p class="mt-2 text-gray-700">
+          Duis lobortis velit tellus, eget luctus tellus facilisis eget.
+          Maecenas non massa varius, molestie lorem eget, molestie nisi.
+          Suspendisse potenti.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      /**
+       * arguments description
+       * name: String
+       * **/
+      const createCompany = async () => {
+        const name = document.querySelector("#name").text;
+
+        const res = await fetch("/company", {
+          body: {
+            name,
+          },
+          method: "POST",
+        });
+
+        console.log("res :>> ", res);
+      };
+
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].classList.add("hidden");
+        }
+        tablinks = document.getElementsByTagName("button");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].classList.remove("active:bg-gray-200");
+        }
+        document.getElementById(tabName).classList.remove("hidden");
+        evt.currentTarget.classList.add("active:bg-gray-200");
+      }
+    </script>
+  </body>
+</html>

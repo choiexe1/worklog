@@ -17,6 +17,7 @@ templates = Jinja2Templates(directory="templates")
 
 Base.metadata.create_all(bind=engine)
 
+
 def get_db():
     db = SessionLocal()
     try:
@@ -24,14 +25,27 @@ def get_db():
     finally:
         db.close()
 
+
 class Company(BaseModel):
     name: str = Field(min_length=1)
 
-@app.get("/")
-def root(request: Request, db: Session = Depends(get_db)):
-    companies = crud.get_companies(db)
-    return templates.TemplateResponse("index.html", {"request": request, "companies": companies}) 
 
-@app.get("/{path}")
-async def create(path: str, db: Session = Depends(get_db)):
-    return db.query(models.Company).all()
+@app.get("/")
+def root(req: Request, db: Session = Depends(get_db)):
+    companies = crud.get_companies(db)
+    return templates.TemplateResponse(
+        "index.html", {"request": req, "companies": companies}
+    )
+
+
+@app.get("/admin")
+def root(req: Request, db: Session = Depends(get_db)):
+    companies = crud.get_companies(db)
+    return templates.TemplateResponse(
+        "admin.html", {"request": req, "companies": companies}
+    )
+
+
+@app.post("/company")
+async def create(req: Request, db: Session = Depends(get_db)):
+    l = await req.body()
