@@ -18,7 +18,7 @@ class Product(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     code = Column(String, unique=True, index=True)
-    type = Column(String, unique=True)
+    type = Column(String)
     name = Column(String, unique=True, index=True)
 
     company_id = Column(Integer, ForeignKey("companies.id"))

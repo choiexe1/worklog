@@ -13,15 +13,14 @@
           onclick="openTab(event, 'tab1')">
           <p class="text-sm tab-1">회사/제품 등록</p>
         </button>
+        <!-- TODO: 탭, 페이지로 나누기 -->
         <button
-          class="w-1/2 py-4 text-center font-medium text-gray-700 bg-gray-100 rounded-tr-lg focus:outline-none"
-          onclick="openTab(event, 'tab2')">
-          <p class="text-sm tab-2">조회</p>
+          class="w-1/2 py-4 text-center font-medium text-gray-700 bg-gray-100 rounded-tr-lg focus:outline-none">
+          <p class="text-sm tab-2">회사/제품 관리</p>
         </button>
         <button
-          class="w-1/2 py-4 text-center font-medium text-gray-700 bg-gray-100 rounded-tr-lg focus:outline-none"
-          onclick="openTab(event, 'tab3')">
-          <p class="text-sm">제품/회사 추가</p>
+          class="w-1/2 py-4 text-center font-medium text-gray-700 bg-gray-100 rounded-tr-lg focus:outline-none">
+          <p class="text-sm">조회</p>
         </button>
       </div>
 
@@ -41,12 +40,14 @@
               <li class="text-neutral-500 text-sm">
                 동일한 이름의 업체가 이미 존재할 경우, 추가할 수 없습니다.
               </li>
-              <li class="text-neutral-500 text-sm"></li>
+              <li class="text-neutral-500 text-sm mt-2">
+                등록된 업체는 아래의 업체명에서 확인할 수 있습니다.
+              </li>
             </ul>
 
             <div class="flex items-center gap-2 my-2 p-1">
               <button
-                onclick="createCompany()"
+                onclick="resultWrapper(createCompany)"
                 class="button p-1 rounded w-full bg-green-600 text-white">
                 등록
               </button>
@@ -58,41 +59,63 @@
             <h1 class="text-lg font-bold m-1">제품 등록</h1>
             <div class="flex items-center gap-2">
               <label for="name" class="w-fit p-1">업체명</label>
-              <select name="company" id="" class="border-b pl-1 bg-neutral-100">
-                <option selected value="select">선택</option>
+              <select
+                name="company"
+                id="company"
+                class="border-b pl-1 bg-neutral-100">
+                <option selected value="">선택</option>
                 {% for company in companies %}
                 <option value="{{company.name}}">{{company.name}}</option>
                 {% endfor %}
               </select>
             </div>
 
+            <div class="flex items-center gap-2">
+              <label for="type" class="w-fit p-1">제품 유형</label>
+              <select name="" id="type" class="flex-auto bg-neutral-100">
+                <option selected value="">선택</option>
+                <option value="복합">복합</option>
+                <option value="탈취">탈취</option>
+                <option value="기능성">기능성</option>
+                <option value="가습">가습</option>
+                <option value="나노트랩">나노트랩</option>
+                <option value="기타">기타</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <label for="product" class="w-fit p-1">제품명</label>
+              <input
+                type="text"
+                id="product"
+                class="flex-auto bg-neutral-100 pl-1" />
+            </div>
+
+            <div class="flex items-center gap-2">
+              <label for="code" class="w-fit p-1">제품 코드</label>
+              <input
+                type="text"
+                id="code"
+                class="flex-auto bg-neutral-100 pl-1" />
+            </div>
+
             <ul class="my-4 p-1 flex flex-col gap-2">
               <li class="text-neutral-500 text-sm">
-                등록 전, 제품명과 코드를 반드시 확인해주세요.
+                등록 전, 제품명과 코드가 정확한지 반드시 확인해주세요.
               </li>
               <li class="text-neutral-500 text-sm">
-                동일한 이름의 제품이 이미 존재할 경우, 추가할 수 없습니다.
+                동일한 이름의 제품이나 코드가 이미 존재할 경우, 추가할 수
+                없습니다.
               </li>
             </ul>
 
             <div class="flex items-center gap-2 my-2 p-1">
-              <button class="button p-1 rounded w-full bg-green-600 text-white">
+              <button
+                onclick="resultWrapper(createProduct)"
+                class="button p-1 rounded w-full bg-green-600 text-white">
                 등록
               </button>
             </div>
-
-            <!-- <div class="flex items-center gap-2">
-                <label for="type" class="w-fit p-1">유형</label>
-                <select name="" id="type" class="flex-auto bg-neutral-100">
-                  <option value="" selected>선택</option>
-                  <option value="">복합</option>
-                  <option value="">탈취</option>
-                  <option value="">기능성</option>
-                  <option value="">가습</option>
-                  <option value="">나노트랩</option>
-                  <option value="">기타</option>
-                </select>
-              </div> -->
           </div>
         </section>
       </div>
@@ -115,24 +138,69 @@
     </div>
 
     <script>
-      /**
-       * arguments description
-       * name: String
-       * **/
-      const createCompany = async () => {
-        const name = document.querySelector("#name").text;
+      const resultWrapper = async (callback) => {
+        const result = await callback();
 
-        const res = await fetch("/company", {
-          body: {
-            name,
-          },
-          method: "POST",
-        });
-
-        console.log("res :>> ", res);
+        if (result.success) {
+          alert(result.message);
+          location.reload();
+        } else {
+          alert(result.message);
+        }
       };
 
-      function openTab(evt, tabName) {
+      const createCompany = async () => {
+        const name = document.querySelector("#name").value.trim();
+
+        if (name == "") {
+          return alert("업체명을 입력해주세요.");
+        }
+
+        const res = await fetch("/company", {
+          body: JSON.stringify({ name }),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        return await res.json();
+      };
+
+      const createProduct = async () => {
+        const name = document.querySelector("#product").value.trim();
+        const code = document.querySelector("#code").value.trim();
+        const company = document.querySelector("#company").value.trim();
+        const type = document.querySelector("#type").value.trim();
+
+        if (company == "") {
+          return alert("업체를 선택해주세요.");
+        }
+
+        if (type == "") {
+          return alert("제품 유형을 선택해주세요.");
+        }
+
+        if (name == "") {
+          return alert("제품명을 입력해주세요.");
+        }
+
+        if (code == "") {
+          return alert("코드를 입력해주세요.");
+        }
+
+        const res = await fetch("/product", {
+          body: JSON.stringify({ name, code, type, company }),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        return await res.json();
+      };
+
+      const openTab = (evt, tabName) => {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
@@ -144,7 +212,7 @@
         }
         document.getElementById(tabName).classList.remove("hidden");
         evt.currentTarget.classList.add("active:bg-gray-200");
-      }
+      };
     </script>
   </body>
 </html>

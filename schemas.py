@@ -6,6 +6,7 @@ class HomeWorkBase(BaseModel):
     title: str
     description: Optional[str] = "-"
 
+
 class HomeWorkCreate(HomeWorkBase):
     pass
 
